@@ -29,6 +29,9 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 @click.option('--name', '-n', default = 'my-zipfile.zip', help = "The name that should be given to the archive. Defaults to 'my-zipfile.zip'.")
 
 
+#defining an optional flag, 'verbose'
+#this enables more information about the operation
+#defaults to False
 @click.option('--verbose', '-v', is_flag = True, default = False, help = 'Show a progress bar and more information about the operation.')
 
 #defining an argument, 'files'
@@ -71,7 +74,7 @@ def zipFile(directory, comp, name, files, verbose):
                 #writing files
                 for file in files:
                     zip.write(file)
-                    
+
                     #updating bar
                     bar.update(i)
 
