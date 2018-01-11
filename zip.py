@@ -1,6 +1,7 @@
 import click
 from zipfile import *
 import os
+from progressbar import *
 
 #a dictionary which sets certain strings as keys and some numeric constants as their values
 compressions = {'ZIP_STORED': ZIP_STORED, 'ZIP_LZMA': ZIP_LZMA, 'ZIP_DEFLATED': ZIP_DEFLATED, 'ZIP_BZIP2': ZIP_BZIP2}
@@ -27,6 +28,9 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 #defaults to 'my-zipfile.zip'
 @click.option('--name', '-n', default = 'my-zipfile.zip', help = "The name that should be given to the archive. Defaults to 'my-zipfile.zip'.")
 
+
+@click.option('--verbose', '-v', is_flag = True, default = False, help = 'Show a progress bar and more information about the operation.')
+
 #defining an argument, 'files'
 #this will collect all the files that need to be archived
 #it accepts an unlimited number of files by setting nargs = -1
@@ -34,11 +38,13 @@ CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 #it requires at least one file name, defined by setting required = True
 @click.argument('files', type = click.Path(exists=True), nargs = -1, default = None, required = True)
 
-def zipFile(directory, comp, name, files):
+def zipFile(directory, comp, name, files, verbose):
     '''
     This command creates an archive in the cwd, unless specified otherwise, of the files passed as argument.
     It can accept any number of files.
     '''
+
+    fileCount = len(files)
 
     #getting the current directory
     cwd = os.getcwd()
@@ -52,9 +58,20 @@ def zipFile(directory, comp, name, files):
     #will be in write mode: 'w'
     #will use the compression passed by user: compressions[comp]
     with ZipFile(name, 'w', compressions[comp]) as zip:
-        for file in files:
-            zip.write(file)
 
+        if verbose:
+            with ProgressBar(widgets=[Timer(), Bar(), Percentage(), " ", AbsoluteETA(),], max_value= 100) as bar:
+                i = 100/fileCount
+                for file in files:
+                    zip.write(file)
+                    bar.update(i)
+                    i += 100/fileCount
+
+            print(f'Zipped {fileCount} files to {directory if directory != "." else "cwd"} under name, {name}.')
+
+        else:
+            for file in files:
+                zip.write(file)
     #changing back to the original directory
     os.chdir(cwd)
     print('Finished!')
