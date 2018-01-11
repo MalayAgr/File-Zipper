@@ -59,19 +59,33 @@ def zipFile(directory, comp, name, files, verbose):
     #will use the compression passed by user: compressions[comp]
     with ZipFile(name, 'w', compressions[comp]) as zip:
 
+        #checking whether verbose flag is provided or not
         if verbose:
+
+            #wrapping the loop with a ProgressBar object
             with ProgressBar(widgets=[Timer(), Bar(), Percentage(), " ", AbsoluteETA(),], max_value= 100) as bar:
+
+                #calculating percentage
                 i = 100/fileCount
+
+                #writing files
                 for file in files:
                     zip.write(file)
+                    
+                    #updating bar
                     bar.update(i)
+
+                    #adding to percentage
                     i += 100/fileCount
 
+            #printing detailed message
             print(f'Zipped {fileCount} files to {directory if directory != "." else "cwd"} under name, {name}.')
 
         else:
+            #writing files
             for file in files:
                 zip.write(file)
+
     #changing back to the original directory
     os.chdir(cwd)
     print('Finished!')
