@@ -40,7 +40,7 @@ def unzipFile(directory, archive, files, verbose):
                             bar.update(i)
                             i += 100/fileCount
 
-                        print(f"Extracted {fileCount} file(s) to {'cwd' if directory == '.' else directory}.")
+                    print(f"Extracted {fileCount} file(s) to {'cwd' if directory == '.' else directory}.")
                 else:
                     for file in files:
                         zipFile.extract(file)
