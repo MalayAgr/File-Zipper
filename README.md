@@ -1,4 +1,4 @@
-##File Zipper
+## File Zipper
 
 This is a command-line application built using Python and Click. It makes available to the user two commands, `zip` and `unzip`, to create an archive of an arbitrary number of files and to extract files from an archive respectively.
 
@@ -10,13 +10,13 @@ Four modules have been used:
 * `os`
 * `progressbar2`
 
-##**Installing the commands**
+## Installing the commands
 
 Before these can be used in the command line, they need to be installed to your current environment. To do this, in your terminal, navigate to the directory where the files have been saved and type the following command:
 
 `pip install --editable .`
 
-##**Using the commands**
+## Using the commands
 
 The help text for the `zip` command:
 
@@ -26,7 +26,7 @@ The help text for the `unzip` command:
 
 ![unzip-help](/images/unzip-help.png)
 
-###Using `zip`
+### Using `zip`
 
 By default, the `zip` command saves a new archive to the cwd under the name, 'my-zipfile.zip' and uses the `ZIP_STORED` compression available in the `zipfile` module. 
 
@@ -50,7 +50,7 @@ To get a progress bar of any operation:
 
 `zip -v <other options>`
 
-###Using `unzip`
+### Using `unzip`
 
 To extract all the files to the cwd from an archive named, `archive.zip` present in the cwd:
 
